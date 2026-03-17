@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+
+# Claude
+.claude/
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/
+
+# Vite artifacts
+vite.svg
+vite.config.js.timestamp-*
+
+# Node
+node_modules/
+.npm
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+assets/videos/*.mp4
+assets/videos/*.mov

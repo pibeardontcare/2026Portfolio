@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git push:*)",
+      "Read(//Users/pozlong/Dev/AIFeels/**)",
+      "Bash(npm run:*)",
+      "Bash(cp:*)",
+      "Bash(ffmpeg -version)",
+      "Bash(ffmpeg -i KeepingtheLightsOn.mp4 -vcodec libx264 -crf 28 -preset fast -acodec aac -b:a 128k -movflags +faststart KeepingtheLightsOn_web.mp4 -y)",
+      "Bash(ffmpeg -i KeepingtheLightsOn2.mp4 -vcodec libx264 -crf 28 -preset fast -acodec aac -b:a 128k -movflags +faststart KeepingtheLightsOn2_web.mp4 -y)",
+      "Bash(ffmpeg -i KeepingtheLightsOn3.mp4 -vcodec libx264 -crf 28 -preset fast -acodec aac -b:a 128k -movflags +faststart KeepingtheLightsOn3_web.mp4 -y)"
+    ]
+  }
+}
