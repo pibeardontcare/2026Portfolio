@@ -587,6 +587,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   aspect-ratio: 21 / 9;
   overflow: hidden;
   background: var(--surface-2);
+  position: relative;
 }
 .project-hero__media img,
 .project-hero__media video {
