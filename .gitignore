@@ -22,5 +22,10 @@ node_modules/
 # Logs
 *.log
 npm-debug.log*
-assets/videos/*.mp4
-assets/videos/*.mov
+# Large showcase videos — upload to GitHub Releases instead
+assets/videos/HWNoAudio.mp4
+assets/videos/KeepingtheLightsOn2.mp4
+assets/videos/KeepingtheLightsOn3.mp4
+assets/videos/PrototypeForumRough.mp4
+assets/videos/WorkSamplesSynoptophore.mp4
+assets/videos/SynoptophoreTests2024.mov

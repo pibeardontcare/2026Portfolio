@@ -425,6 +425,15 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   z-index: 1;
 }
 
+/* Device/product photo card — contain rather than crop */
+.card__media--device {
+  background: #0d0f14;
+}
+.card__media--device img {
+  object-fit: contain;
+  padding: 1.5rem;
+}
+
 /* Text-only card (Sentiment Mesh) */
 .card__media--no-asset {
   position: relative;
