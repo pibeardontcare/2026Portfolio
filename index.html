@@ -49,11 +49,14 @@
               Creative<br>
               <em>Technologist</em>
             </h1>
-            <div class="hero__tags">
-              <span class="tag tag--accent">AI</span>
-              <span class="tag">XR</span>
-              <span class="tag">Immersive</span>
-              <span class="tag">Salesforce</span>
+            <div class="hero__companies">
+              <span class="hero__company">Salesforce</span>
+              <span class="hero__company-sep">·</span>
+              <span class="hero__company">Meta</span>
+              <span class="hero__company-sep">·</span>
+              <span class="hero__company">Apple</span>
+              <span class="hero__company-sep">·</span>
+              <span class="hero__company">Facebook</span>
             </div>
           </div>
           <div class="hero__meta">
@@ -71,7 +74,13 @@
       <div class="container">
         <div class="section-header">
           <span class="t-label">Selected work</span>
-          <span class="t-label">2019 – 2025</span>
+          <div class="filter-tabs" role="tablist" aria-label="Filter projects by company">
+            <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+            <button class="filter-tab" data-filter="salesforce" role="tab" aria-selected="false">Salesforce</button>
+            <button class="filter-tab" data-filter="apple" role="tab" aria-selected="false">Apple</button>
+            <button class="filter-tab" data-filter="meta" role="tab" aria-selected="false">Meta</button>
+            <button class="filter-tab" data-filter="xr" role="tab" aria-selected="false">XR</button>
+          </div>
         </div>
       </div>
 
@@ -79,7 +88,7 @@
         <div class="projects__grid">
 
           <!-- FEATURED: Creative Automation -->
-          <article class="card card--featured reveal">
+          <article class="card card--featured reveal" data-company="apple">
             <a href="projects/creative-automation.html" class="card__link" aria-label="View Creative Automation project"></a>
             <div class="card__media">
               <video autoplay muted loop playsinline>
@@ -101,7 +110,7 @@
           </article>
 
           <!-- Keeping the Lights On -->
-          <article class="card card--half reveal reveal-delay-1">
+          <article class="card card--half reveal reveal-delay-1" data-company="meta">
             <a href="projects/keeping-lights-on.html" class="card__link" aria-label="View Keeping the Lights On project"></a>
             <div class="card__media">
               <video autoplay muted loop playsinline>
@@ -121,7 +130,7 @@
           </article>
 
           <!-- VR Synoptophore -->
-          <article class="card card--half reveal reveal-delay-2">
+          <article class="card card--half reveal reveal-delay-2" data-company="xr">
             <a href="projects/vr-synoptophore.html" class="card__link" aria-label="View VR Synoptophore project"></a>
             <div class="card__media">
               <img src="assets/images/Synoptophore-grey.webp" alt="VR Synoptophore" loading="lazy">
@@ -139,7 +148,7 @@
           </article>
 
           <!-- VR Careers -->
-          <article class="card card--third reveal">
+          <article class="card card--third reveal" data-company="meta">
             <a href="projects/vr-careers.html" class="card__link" aria-label="View VR Careers project"></a>
             <div class="card__media">
               <img src="assets/images/Interview%20Prep%20Cover.png" alt="VR Careers — Meta Recruiting" loading="lazy">
@@ -157,7 +166,7 @@
           </article>
 
           <!-- AR Pen Pals -->
-          <article class="card card--third reveal reveal-delay-1">
+          <article class="card card--third reveal reveal-delay-1" data-company="xr">
             <a href="projects/ar-pen-pals.html" class="card__link" aria-label="View AR Pen Pals project"></a>
             <div class="card__media">
               <video autoplay muted loop playsinline>
@@ -177,7 +186,7 @@
           </article>
 
           <!-- VR Mindfulness -->
-          <article class="card card--third reveal reveal-delay-2">
+          <article class="card card--third reveal reveal-delay-2" data-company="xr">
             <a href="projects/vr-mindfulness.html" class="card__link" aria-label="View VR Mindfulness project"></a>
             <div class="card__media">
               <video autoplay muted loop playsinline>

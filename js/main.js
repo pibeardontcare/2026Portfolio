@@ -50,6 +50,40 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 /* ============================================================
+   PROJECT FILTER TABS
+   ============================================================ */
+const filterTabs = document.querySelectorAll('.filter-tab');
+const projectCards = document.querySelectorAll('.projects__grid article[data-company]');
+
+filterTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const filter = tab.dataset.filter;
+
+    // Update active tab
+    filterTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+
+    // Show/hide cards
+    projectCards.forEach(card => {
+      const match = filter === 'all' || card.dataset.company === filter;
+      card.classList.toggle('card--filtered-out', !match);
+    });
+
+    // Sentiment Mesh has no data-company — always visible
+    const allCards = document.querySelectorAll('.projects__grid article');
+    allCards.forEach(card => {
+      if (!card.dataset.company) {
+        card.classList.remove('card--filtered-out');
+      }
+    });
+  });
+});
+
+/* ============================================================
    ACTIVE NAV LINK (detail pages)
    ============================================================ */
 const currentPath = window.location.pathname;
