@@ -455,14 +455,16 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   overflow: hidden;
 }
 .card__media-text-bg span {
-  font-size: clamp(4rem, 12vw, 11rem);
+  font-size: clamp(2.5rem, 8vw, 7rem);
   font-weight: 700;
   letter-spacing: -0.04em;
-  line-height: 0.88;
+  line-height: 0.9;
+  white-space: nowrap;
   color: transparent;
   -webkit-text-stroke: 1px var(--text-faint);
   text-stroke: 1px var(--text-faint);
   transition: -webkit-text-stroke-color 0.4s;
+  max-width: 100%;
 }
 .card:hover .card__media-text-bg span {
   -webkit-text-stroke-color: var(--border);
