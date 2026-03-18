@@ -81,13 +81,13 @@
           <div class="project-body__inner">
             <div class="project-body__text">
               <p class="reveal">
-                <strong>The discourse around AI is enormous, fragmented, and emotionally loaded.</strong> Sentiment Mesh is a weekend exploration into making that discourse navigable — mapping thousands of Reddit posts across six AI-focused communities into a single 3D space.
+                <strong>How do different communities feel about AI — and how do those feelings differ across the internet?</strong> Sentiment Mesh is a weekend experiment in making that question spatial and intuitive. I pulled the top 50 posts from the past month across six subreddits: r/ChatGPT, r/ArtificialIntelligence, r/Futurology, r/Jobs, r/DigitalMarketing, and r/AI.
               </p>
               <p class="reveal reveal-delay-1">
-                Each point in the visualization represents a single post, positioned by sentiment score (VADER), recency, and community membership. The result is an immediate, spatial sense of how different AI communities talk about the technology differently — which communities skew optimistic, which are anxious, and how sentiment shifts over time.
+                Using the Reddit API, a Python backend, and VADER sentiment analysis (via NLTK), each post is tagged with a sentiment score and placed in 3D space using Three.js. Sentiment controls vertical position — positive posts float up, negative ones sink. Recency controls depth — older posts fall further back. Subreddit controls horizontal grouping, forming visible columns by community.
               </p>
               <p class="reveal reveal-delay-2">
-                Built in a weekend using Python for data collection and analysis, and Three.js for the 3D rendering. A reminder that sometimes the most interesting projects start with a question and forty-eight hours.
+                One insight stood out: overall sentiment was more positive than expected. This likely reflects the communities surveyed — early adopters and enthusiasts — but it raises an interesting question about where the anxiety actually lives online. The next step is letting users query any subreddit in real time, turning this into a tool for live cultural insight.
               </p>
             </div>
             <aside class="project-body__sidebar">
@@ -103,8 +103,12 @@
               <div class="project-sidebar-block reveal reveal-delay-1">
                 <p class="t-label project-sidebar-block__label">Subreddits</p>
                 <ul class="project-sidebar-block__list">
-                  <li class="project-sidebar-block__item">6 AI communities analyzed</li>
-                  <li class="project-sidebar-block__item">Sentiment × recency × community</li>
+                  <li class="project-sidebar-block__item">r/ChatGPT</li>
+                  <li class="project-sidebar-block__item">r/ArtificialIntelligence</li>
+                  <li class="project-sidebar-block__item">r/Futurology</li>
+                  <li class="project-sidebar-block__item">r/Jobs</li>
+                  <li class="project-sidebar-block__item">r/DigitalMarketing</li>
+                  <li class="project-sidebar-block__item">r/AI</li>
                 </ul>
               </div>
             </aside>
