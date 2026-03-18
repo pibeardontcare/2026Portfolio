@@ -288,6 +288,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: none;
 }
 
+/* Three.js gallery canvas */
+#gallery-canvas {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  min-height: 500px;
+}
+
 /* ============================================================
    PROJECTS — GRID
    ============================================================ */

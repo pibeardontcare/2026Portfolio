@@ -12,6 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js" } }
+  </script>
 </head>
 <body>
 
@@ -81,11 +84,12 @@
         </div>
       </div>
 
-      <div class="container" style="padding-left:0; padding-right:0; max-width:100%;">
-        <div class="projects__grid">
+      <canvas id="gallery-canvas" aria-label="Interactive project gallery"></canvas>
 
-          <!-- ROW 1: FEATURED — MrBeast × Salesforce -->
-          <article class="card card--featured reveal" data-company="ai">
+      <!-- kept for SEO / no-JS fallback, visually hidden -->
+      <div class="projects__grid" aria-hidden="true" style="display:none;">
+        <div class="container" style="padding-left:0; padding-right:0; max-width:100%;">
+        <article class="card card--featured" data-company="ai">
             <a href="projects/mrbeast-puzzle.html" class="card__link" aria-label="View MrBeast × Salesforce Super Bowl project"></a>
             <div class="card__media">
               <img src="https://img.youtube.com/vi/Lp9OEfkWfLI/maxresdefault.jpg" alt="Salesforce × MrBeast Super Bowl Puzzle Game" loading="lazy">
@@ -283,6 +287,7 @@
           </article>
 
         </div>
+        </div>
       </div>
     </section>
 
@@ -342,5 +347,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script type="module" src="js/gallery.js"></script>
 </body>
 </html>
