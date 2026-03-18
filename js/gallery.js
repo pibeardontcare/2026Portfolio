@@ -1,22 +1,33 @@
 /**
  * gallery.js — Three.js vertical timeline gallery
- * Projects arranged chronologically; scroll drives camera through time.
- * Mouse parallax tilts the scene; hover highlights; click navigates.
+ * Timeline line on left. Cards in two columns to the right.
+ * Scroll drives camera through time (2026 → 2019).
  */
 import * as THREE from 'three'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const CARD_ASPECT  = 1.6
-const BASE_W       = 3.0
+const CARD_SIZE    = 1.0         // uniform — all cards same size
+const CARD_W       = 3.0 * CARD_SIZE
+const CARD_H       = CARD_W / CARD_ASPECT
 const TEX_W        = 960
 const TEX_H        = 600
-const PARALLAX_X   = 0.16   // mouse X → scene tilt (yaw)
-const PARALLAX_Y   = 0.06   // mouse Y → scene tilt (pitch)
-const FLOAT_AMP    = 0.05
+const PARALLAX_X   = 0.10
+const PARALLAX_Y   = 0.04
+const FLOAT_AMP    = 0.04
 const FLOAT_SPEED  = 0.38
 const CAM_LERP     = 0.07
+const ACCENT_CSS   = '#3DC9C0'
+const ACCENT_HEX   = 0x3DC9C0
 
-// World-space Y for each year (top = 2026, bottom = 2019)
+// Timeline X position (left side of canvas)
+const TIMELINE_X   = -5.2
+// Cards start X (right of timeline)
+const COL_A_X      =  0.6        // left column
+const COL_B_X      =  4.0        // right column
+const SINGLE_X     =  2.3        // single card per year — centered between cols
+
+// World-space Y per year
 const YEAR_Y = {
   2026: 10.0,
   2025:  7.2,
@@ -28,12 +39,16 @@ const YEAR_Y = {
   2019: -8.8,
 }
 
-const CAM_START = 12.0   // camera Y at scroll = 0  (above 2026)
-const CAM_END   = -11.0  // camera Y at scroll = 1  (below 2019)
-const LINE_TOP  = 11.2
-const LINE_BOT  = -10.5
+const CAM_START =  12.5  // camera Y at scroll = 0
+const CAM_END   = -11.5  // camera Y at scroll = 1
+const LINE_TOP  =  11.5
+const LINE_BOT  = -11.0
 
-// ─── Projects (ordered newest → oldest) ──────────────────────────────────────
+// Camera slightly right of center to balance timeline (left) + cards (right)
+const CAM_X = -0.5
+
+// ─── Projects (newest → oldest) ──────────────────────────────────────────────
+//   col: 'a' | 'b' | 'single'  (position within year)
 const PROJECTS = [
   {
     id: 'mrbeast',
@@ -42,8 +57,7 @@ const PROJECTS = [
     thumb: 'https://img.youtube.com/vi/Lp9OEfkWfLI/maxresdefault.jpg',
     tags: ['AI', 'Game Design'],
     category: 'ai',
-    year: 2026, company: 'Salesforce',
-    side: 'right', xOff: 4.8, zOff: 0.5, size: 1.45,
+    year: 2026, company: 'Salesforce', col: 'single', zOff: 0.3,
   },
   {
     id: 'sentiment-mesh',
@@ -52,8 +66,7 @@ const PROJECTS = [
     thumb: null,
     tags: ['Data Viz', 'Three.js'],
     category: 'ai',
-    year: 2025, company: 'Personal',
-    side: 'left', xOff: -4.0, zOff: -0.4, size: 1.05,
+    year: 2025, company: 'Personal', col: 'single', zOff: -0.2,
   },
   {
     id: 'synoptophore',
@@ -62,8 +75,7 @@ const PROJECTS = [
     thumb: 'assets/images/vr-synoptophore-img.png',
     tags: ['VR', 'Health Tech'],
     category: 'xr',
-    year: 2024, company: 'UC Davis',
-    side: 'right', xOff: 4.2, zOff: 0.2, size: 1.1,
+    year: 2024, company: 'UC Davis', col: 'a', zOff: 0.2,
   },
   {
     id: 'ar-pen-pals',
@@ -72,8 +84,7 @@ const PROJECTS = [
     thumb: 'assets/images/thumb-ar-pen-pals.jpg',
     tags: ['AR', 'Education'],
     category: 'xr',
-    year: 2024, company: 'MIT Reality Hack',
-    side: 'left', xOff: -3.8, zOff: -0.3, size: 0.92,
+    year: 2024, company: 'MIT Reality Hack', col: 'b', zOff: -0.2,
   },
   {
     id: 'creative-auto',
@@ -82,8 +93,7 @@ const PROJECTS = [
     thumb: null,
     tags: ['AI', 'Robotics'],
     category: 'ai',
-    year: 2023, company: 'Salesforce',
-    side: 'right', xOff: 4.0, zOff: 0.0, size: 0.95,
+    year: 2023, company: 'Salesforce', col: 'single', zOff: 0.1,
   },
   {
     id: 'vr-careers',
@@ -92,8 +102,7 @@ const PROJECTS = [
     thumb: 'assets/images/Interview%20Prep%20Cover.png',
     tags: ['VR', 'UX'],
     category: 'xr',
-    year: 2022, company: 'Meta',
-    side: 'left', xOff: -4.2, zOff: 0.3, size: 1.0,
+    year: 2022, company: 'Meta', col: 'single', zOff: 0.2,
   },
   {
     id: 'klo',
@@ -102,8 +111,7 @@ const PROJECTS = [
     thumb: 'assets/images/thumb-keeping-lights-on.jpg',
     tags: ['Campaign', 'Brand'],
     category: '',
-    year: 2021, company: 'Facebook',
-    side: 'right', xOff: 4.5, zOff: -0.2, size: 1.1,
+    year: 2021, company: 'Facebook', col: 'single', zOff: -0.1,
   },
   {
     id: 'vr-mindfulness',
@@ -112,8 +120,7 @@ const PROJECTS = [
     thumb: 'assets/images/thumb-vr-mindfulness.jpg',
     tags: ['VR', 'Mindfulness'],
     category: 'xr',
-    year: 2020, company: 'Personal',
-    side: 'left', xOff: -4.0, zOff: 0.4, size: 0.92,
+    year: 2020, company: 'Personal', col: 'a', zOff: 0.3,
   },
   {
     id: 'art-plinko',
@@ -122,8 +129,7 @@ const PROJECTS = [
     thumb: null,
     tags: ['Interactive', 'Generative'],
     category: 'games',
-    year: 2020, company: 'Personal',
-    side: 'right', xOff: 3.8, zOff: -0.5, size: 0.88,
+    year: 2020, company: 'Personal', col: 'b', zOff: -0.3,
   },
   {
     id: 'nanaverse',
@@ -132,8 +138,7 @@ const PROJECTS = [
     thumb: null,
     tags: ['World Building'],
     category: 'games',
-    year: 2019, company: 'Personal',
-    side: 'left', xOff: -3.6, zOff: 0.2, size: 0.88,
+    year: 2019, company: 'Personal', col: 'a', zOff: 0.1,
   },
   {
     id: 'finding-primrose',
@@ -142,12 +147,17 @@ const PROJECTS = [
     thumb: null,
     tags: ['Game', 'Narrative'],
     category: 'games',
-    year: 2019, company: 'Personal',
-    side: 'right', xOff: 3.6, zOff: -0.3, size: 0.85,
+    year: 2019, company: 'Personal', col: 'b', zOff: -0.1,
   },
 ]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
+function colToX(col) {
+  if (col === 'a')      return COL_A_X
+  if (col === 'b')      return COL_B_X
+  return SINGLE_X
+}
+
 function loadImage(src) {
   return new Promise(resolve => {
     if (!src) return resolve(null)
@@ -183,19 +193,17 @@ function makeCardTexture(project, img) {
     grad.addColorStop(1,    'rgba(16,16,16,1)')
     ctx.fillStyle = grad; ctx.fillRect(0, 0, TEX_W, TEX_H)
   } else {
-    // Dot grid
     ctx.fillStyle = '#1d1d1d'
     for (let x = 22; x < TEX_W; x += 22)
       for (let y = 22; y < TEX_H; y += 22) {
         ctx.beginPath(); ctx.arc(x, y, 1, 0, Math.PI * 2); ctx.fill()
       }
-    // Ghost words
     const words = project.title.toUpperCase().split(' ').slice(0, 2)
-    ctx.font = `700 ${Math.floor(TEX_H * 0.25)}px Inter, system-ui, sans-serif`
+    ctx.font = `700 ${Math.floor(TEX_H * 0.24)}px Inter, system-ui, sans-serif`
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
     ctx.strokeStyle = '#2a2a2a'; ctx.lineWidth = 1
     words.forEach((w, i) => {
-      ctx.strokeText(w, TEX_W / 2, TEX_H * 0.38 + i * TEX_H * 0.27)
+      ctx.strokeText(w, TEX_W / 2, TEX_H * 0.36 + i * TEX_H * 0.26)
     })
   }
 
@@ -213,13 +221,13 @@ function makeCardTexture(project, img) {
     ctx.strokeStyle = '#333'; ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(tx + r, ry); ctx.lineTo(tx + rw - r, ry)
-    ctx.arcTo(tx + rw, ry, tx + rw, ry + r, r)
+    ctx.arcTo(tx + rw, ry,      tx + rw, ry + r,      r)
     ctx.lineTo(tx + rw, ry + rh - r)
     ctx.arcTo(tx + rw, ry + rh, tx + rw - r, ry + rh, r)
-    ctx.lineTo(tx + r, ry + rh)
-    ctx.arcTo(tx, ry + rh, tx, ry + rh - r, r)
+    ctx.lineTo(tx + r,  ry + rh)
+    ctx.arcTo(tx, ry + rh,      tx, ry + rh - r,      r)
     ctx.lineTo(tx, ry + r)
-    ctx.arcTo(tx, ry, tx + r, ry, r)
+    ctx.arcTo(tx, ry,           tx + r, ry,            r)
     ctx.closePath(); ctx.stroke()
     ctx.fillStyle = '#5A5A5A'
     ctx.fillText(tag, tx + pw, TEX_H - 16)
@@ -230,31 +238,24 @@ function makeCardTexture(project, img) {
 }
 
 // ─── Year label texture ───────────────────────────────────────────────────────
-function makeYearLabel(year, companies) {
-  const W = 480, H = 110
+function makeYearLabelTexture(year, companies) {
+  const W = 360, H = 100
   const canvas = document.createElement('canvas')
   canvas.width = W; canvas.height = H
   const ctx = canvas.getContext('2d')
   ctx.clearRect(0, 0, W, H)
 
-  // Year number
-  ctx.font = `700 62px Inter, system-ui, sans-serif`
-  ctx.fillStyle = '#3DC9C0'
-  ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic'
-  ctx.fillText(String(year), W - 8, 72)
+  ctx.font = `700 58px Inter, system-ui, sans-serif`
+  ctx.fillStyle = ACCENT_CSS
+  ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'
+  ctx.fillText(String(year), 0, 66)
 
-  // Company / institution
   const label = [...new Set(companies.filter(Boolean))].join(' · ')
-  ctx.font = `500 21px Inter, system-ui, sans-serif`
+  ctx.font = `400 20px Inter, system-ui, sans-serif`
   ctx.fillStyle = '#3a3a3a'
-  ctx.fillText(label, W - 8, 100)
+  ctx.fillText(label, 0, 92)
 
-  const tex = new THREE.CanvasTexture(canvas)
-  // World plane: keep aspect ratio
-  const worldW = 2.1, worldH = worldW * (H / W)
-  const geo = new THREE.PlaneGeometry(worldW, worldH)
-  const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })
-  return new THREE.Mesh(geo, mat)
+  return new THREE.CanvasTexture(canvas)
 }
 
 // ─── Gallery class ────────────────────────────────────────────────────────────
@@ -271,13 +272,11 @@ class ProjectGallery {
     this.meshes    = []
 
     this._init()
-    this._buildTimeline()
-    this._loadAndBuildCards()
+    this._loadAndBuild()   // builds timeline + cards after fonts ready
     this._bindEvents()
   }
 
   _init() {
-    // canvas is position:sticky 100vw×100vh — use window dims (clientWidth=0 before paint)
     const w = window.innerWidth
     const h = window.innerHeight
 
@@ -287,109 +286,107 @@ class ProjectGallery {
     this.renderer.setClearColor(0x080808)
 
     this.scene  = new THREE.Scene()
-    this.scene.fog = new THREE.FogExp2(0x080808, 0.038)
 
     this.camera = new THREE.PerspectiveCamera(52, w / h, 0.1, 60)
-    this.camera.position.set(0, CAM_START, 7.5)
+    this.camera.position.set(CAM_X, CAM_START, 7.5)
 
     this.group = new THREE.Group()
     this.scene.add(this.group)
   }
 
-  _buildTimeline() {
-    const ACCENT = 0x3DC9C0
+  async _loadAndBuild() {
+    // Wait for fonts so year labels render correctly
+    await document.fonts.ready
 
-    // ── Vertical line ──────────────────────────────────────────────────────
-    const lineH = LINE_TOP - LINE_BOT
-    const lineGeo = new THREE.PlaneGeometry(0.012, lineH)
+    this._buildTimeline()
+
+    const images = await Promise.all(PROJECTS.map(p => loadImage(p.thumb)))
+    PROJECTS.forEach((project, i) => this._buildCard(project, images[i]))
+
+    this._animate()
+  }
+
+  _buildTimeline() {
+    // ── Vertical line ────────────────────────────────────────────────────────
+    const lineH   = LINE_TOP - LINE_BOT
+    const lineGeo = new THREE.PlaneGeometry(0.018, lineH)
     const lineMat = new THREE.MeshBasicMaterial({
-      color: ACCENT, transparent: true, opacity: 0.28, depthWrite: false,
+      color: ACCENT_HEX, transparent: true, opacity: 0.35, depthWrite: false,
     })
     const line = new THREE.Mesh(lineGeo, lineMat)
-    line.position.set(0, (LINE_TOP + LINE_BOT) / 2, -1.5)
+    line.position.set(TIMELINE_X, (LINE_TOP + LINE_BOT) / 2, -1.0)
     this.group.add(line)
 
-    // ── Per-year tick marks + labels ──────────────────────────────────────
-    // Group companies by year
-    const yearCompanies = {}
+    // ── Collect companies per year ───────────────────────────────────────────
+    const byYear = {}
     PROJECTS.forEach(p => {
-      if (!yearCompanies[p.year]) yearCompanies[p.year] = []
-      yearCompanies[p.year].push(p.company)
+      if (!byYear[p.year]) byYear[p.year] = []
+      byYear[p.year].push(p.company)
     })
 
-    Object.entries(YEAR_Y).forEach(([yearStr, y]) => {
-      const year = Number(yearStr)
-      const companies = yearCompanies[year] || []
+    // ── Per-year markers + labels ────────────────────────────────────────────
+    Object.entries(YEAR_Y).forEach(([yrStr, y]) => {
+      const year = Number(yrStr)
 
-      // Tick mark (horizontal)
-      const tickGeo = new THREE.PlaneGeometry(0.5, 0.009)
-      const tickMat = new THREE.MeshBasicMaterial({
-        color: ACCENT, transparent: true, opacity: 0.7, depthWrite: false,
-      })
-      const tick = new THREE.Mesh(tickGeo, tickMat)
-      tick.position.set(0, y, -1.4)
-      this.group.add(tick)
-
-      // Dot at tick centre
-      const dotGeo = new THREE.CircleGeometry(0.045, 16)
-      const dotMat = new THREE.MeshBasicMaterial({ color: ACCENT })
-      const dot = new THREE.Mesh(dotGeo, dotMat)
-      dot.position.set(0, y, -1.3)
+      // Dot
+      const dotGeo = new THREE.CircleGeometry(0.055, 16)
+      const dotMat = new THREE.MeshBasicMaterial({ color: ACCENT_HEX })
+      const dot    = new THREE.Mesh(dotGeo, dotMat)
+      dot.position.set(TIMELINE_X, y, -0.9)
       this.group.add(dot)
 
-      // Year label (right-aligned, left of line)
-      if (companies.length > 0) {
-        const labelMesh = makeYearLabel(year, companies)
-        // Right edge of label at x = -0.2 (just left of the line)
-        labelMesh.position.set(-0.2 - 2.1 / 2, y, -1.45)
-        this.group.add(labelMesh)
-      }
+      // Short tick extending right toward cards
+      const tickGeo = new THREE.PlaneGeometry(0.45, 0.009)
+      const tickMat = new THREE.MeshBasicMaterial({
+        color: ACCENT_HEX, transparent: true, opacity: 0.55, depthWrite: false,
+      })
+      const tick = new THREE.Mesh(tickGeo, tickMat)
+      tick.position.set(TIMELINE_X + 0.225, y, -0.95)
+      this.group.add(tick)
+
+      // Year + company label (to the right of line)
+      const companies = byYear[year] || []
+      const tex       = makeYearLabelTexture(year, companies)
+      const labelW    = 2.0
+      const labelH    = labelW * (100 / 360)
+      const labelGeo  = new THREE.PlaneGeometry(labelW, labelH)
+      const labelMat  = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })
+      const label     = new THREE.Mesh(labelGeo, labelMat)
+      // Left-align: left edge at TIMELINE_X + 0.25
+      label.position.set(TIMELINE_X + 0.25 + labelW / 2, y + labelH * 0.55, -0.95)
+      this.group.add(label)
     })
   }
 
-  async _loadAndBuildCards() {
-    await document.fonts.ready
-    const images = await Promise.all(PROJECTS.map(p => loadImage(p.thumb)))
+  _buildCard(project, img) {
+    const texture = makeCardTexture(project, img)
+    const geo     = new THREE.PlaneGeometry(CARD_W, CARD_H)
+    const mat     = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 1 })
+    const mesh    = new THREE.Mesh(geo, mat)
 
-    PROJECTS.forEach((project, i) => {
-      const texture = makeCardTexture(project, images[i])
-      const w = BASE_W * project.size
-      const h = w / CARD_ASPECT
+    const x = colToX(project.col)
+    const y = YEAR_Y[project.year]
+    mesh.position.set(x, y, project.zOff)
 
-      const geo     = new THREE.PlaneGeometry(w, h)
-      const mat     = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 1 })
-      const mesh    = new THREE.Mesh(geo, mat)
+    // Hover outline
+    const oGeo    = new THREE.PlaneGeometry(CARD_W + 0.07, CARD_H + 0.07)
+    const oMat    = new THREE.MeshBasicMaterial({ color: ACCENT_HEX, transparent: true, opacity: 0 })
+    const outline = new THREE.Mesh(oGeo, oMat)
+    outline.position.z = -0.01
+    mesh.add(outline)
 
-      // Position: year Y + side offset
-      const baseY = YEAR_Y[project.year]
-      mesh.position.set(project.xOff, baseY, project.zOff)
+    mesh.userData = {
+      project,
+      origPos:       mesh.position.clone(),
+      phase:         Math.random() * Math.PI * 2,
+      targetScale:   1,
+      curScale:      1,
+      targetOpacity: 1,
+      outline,
+    }
 
-      // Subtle tilt toward center
-      mesh.rotation.y = project.side === 'right' ? -0.06 : 0.06
-
-      // Hover outline
-      const oGeo    = new THREE.PlaneGeometry(w + 0.07, h + 0.07)
-      const oMat    = new THREE.MeshBasicMaterial({ color: 0x3DC9C0, transparent: true, opacity: 0 })
-      const outline = new THREE.Mesh(oGeo, oMat)
-      outline.position.z = -0.01
-      mesh.add(outline)
-
-      mesh.userData = {
-        project,
-        origPos:       mesh.position.clone(),
-        origRotY:      mesh.rotation.y,
-        phase:         Math.random() * Math.PI * 2,
-        targetScale:   1,
-        curScale:      1,
-        targetOpacity: 1,
-        outline,
-      }
-
-      this.group.add(mesh)
-      this.meshes.push(mesh)
-    })
-
-    this._animate()
+    this.group.add(mesh)
+    this.meshes.push(mesh)
   }
 
   _getScrollProgress() {
@@ -415,19 +412,18 @@ class ProjectGallery {
     this.group.rotation.y += ( this.smoothPtr.x * PARALLAX_X - this.group.rotation.y) * 0.06
     this.group.rotation.x += (-this.smoothPtr.y * PARALLAX_Y - this.group.rotation.x) * 0.06
 
-    // Per-card animation
     this.meshes.forEach(m => {
       const d = m.userData
 
-      // Gentle float
+      // Idle float
       m.position.y = d.origPos.y + Math.sin(t * FLOAT_SPEED + d.phase) * FLOAT_AMP
       m.position.x = d.origPos.x + Math.cos(t * FLOAT_SPEED * 0.55 + d.phase) * FLOAT_AMP * 0.4
 
-      // Scale (hover)
+      // Scale
       d.curScale += (d.targetScale - d.curScale) * 0.1
       m.scale.setScalar(d.curScale)
 
-      // Opacity (filter)
+      // Opacity
       m.material.opacity += (d.targetOpacity - m.material.opacity) * 0.07
 
       // Outline
