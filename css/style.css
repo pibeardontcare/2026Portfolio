@@ -9,8 +9,8 @@
   --text: #F0F0F0;
   --text-muted: #5A5A5A;
   --text-faint: #2A2A2A;
-  --accent: #BBFF00;
-  --accent-dim: rgba(187, 255, 0, 0.08);
+  --accent: #3DC9C0;
+  --accent-dim: rgba(61, 201, 192, 0.08);
   --font: 'Inter', system-ui, -apple-system, sans-serif;
   --max-w: 1360px;
   --pad: clamp(1.25rem, 4vw, 2.5rem);
@@ -291,7 +291,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 /* Three.js timeline gallery */
 .gallery-scroll-track {
   position: relative;
-  height: 540vh;   /* scroll room for 7 years of timeline */
+  height: 620vh;   /* scroll room for 8 years of timeline (2019–2026) */
 }
 #gallery-canvas {
   position: sticky;

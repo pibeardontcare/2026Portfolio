@@ -16,21 +16,22 @@ const FLOAT_AMP    = 0.05
 const FLOAT_SPEED  = 0.38
 const CAM_LERP     = 0.07
 
-// World-space Y for each year (top = 2025, bottom = 2019)
+// World-space Y for each year (top = 2026, bottom = 2019)
 const YEAR_Y = {
-  2025:  8.0,
-  2024:  4.8,
+  2026: 10.0,
+  2025:  7.2,
+  2024:  4.4,
   2023:  1.6,
-  2022: -1.6,
-  2021: -4.8,
-  2020: -7.2,
-  2019: -9.6,
+  2022: -1.2,
+  2021: -4.0,
+  2020: -6.4,
+  2019: -8.8,
 }
 
-const CAM_START = 10.5   // camera Y at scroll = 0  (above 2025)
-const CAM_END   = -12.0  // camera Y at scroll = 1  (below 2019)
-const LINE_TOP  =  9.2
-const LINE_BOT  = -11.0
+const CAM_START = 12.0   // camera Y at scroll = 0  (above 2026)
+const CAM_END   = -11.0  // camera Y at scroll = 1  (below 2019)
+const LINE_TOP  = 11.2
+const LINE_BOT  = -10.5
 
 // ─── Projects (ordered newest → oldest) ──────────────────────────────────────
 const PROJECTS = [
@@ -41,7 +42,7 @@ const PROJECTS = [
     thumb: 'https://img.youtube.com/vi/Lp9OEfkWfLI/maxresdefault.jpg',
     tags: ['AI', 'Game Design'],
     category: 'ai',
-    year: 2025, company: 'Salesforce',
+    year: 2026, company: 'Salesforce',
     side: 'right', xOff: 4.8, zOff: 0.5, size: 1.45,
   },
   {
@@ -238,7 +239,7 @@ function makeYearLabel(year, companies) {
 
   // Year number
   ctx.font = `700 62px Inter, system-ui, sans-serif`
-  ctx.fillStyle = '#BBFF00'
+  ctx.fillStyle = '#3DC9C0'
   ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic'
   ctx.fillText(String(year), W - 8, 72)
 
@@ -276,8 +277,9 @@ class ProjectGallery {
   }
 
   _init() {
-    const w = this.canvas.clientWidth
-    const h = this.canvas.clientHeight
+    // canvas is position:sticky 100vw×100vh — use window dims (clientWidth=0 before paint)
+    const w = window.innerWidth
+    const h = window.innerHeight
 
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true })
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
@@ -295,7 +297,7 @@ class ProjectGallery {
   }
 
   _buildTimeline() {
-    const ACCENT = 0xBBFF00
+    const ACCENT = 0x3DC9C0
 
     // ── Vertical line ──────────────────────────────────────────────────────
     const lineH = LINE_TOP - LINE_BOT
@@ -367,7 +369,7 @@ class ProjectGallery {
 
       // Hover outline
       const oGeo    = new THREE.PlaneGeometry(w + 0.07, h + 0.07)
-      const oMat    = new THREE.MeshBasicMaterial({ color: 0xBBFF00, transparent: true, opacity: 0 })
+      const oMat    = new THREE.MeshBasicMaterial({ color: 0x3DC9C0, transparent: true, opacity: 0 })
       const outline = new THREE.Mesh(oGeo, oMat)
       outline.position.z = -0.01
       mesh.add(outline)
@@ -468,8 +470,8 @@ class ProjectGallery {
     })
 
     window.addEventListener('resize', () => {
-      const w = this.canvas.clientWidth
-      const h = this.canvas.clientHeight
+      const w = window.innerWidth
+      const h = window.innerHeight
       this.camera.aspect = w / h
       this.camera.updateProjectionMatrix()
       this.renderer.setSize(w, h, false)
