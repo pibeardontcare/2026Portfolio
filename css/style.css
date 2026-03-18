@@ -288,12 +288,17 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: none;
 }
 
-/* Three.js gallery canvas */
+/* Three.js timeline gallery */
+.gallery-scroll-track {
+  position: relative;
+  height: 540vh;   /* scroll room for 7 years of timeline */
+}
 #gallery-canvas {
+  position: sticky;
+  top: 0;
   display: block;
   width: 100%;
-  height: 85vh;
-  min-height: 500px;
+  height: 100vh;
 }
 
 /* ============================================================
