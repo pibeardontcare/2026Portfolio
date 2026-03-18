@@ -53,17 +53,17 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
    FILTER TABS
    ============================================================ */
 const filterTabs = document.querySelectorAll('.filter-tab');
-const cards = document.querySelectorAll('.card');
-if (filterTabs.length && cards.length) {
+const rows = document.querySelectorAll('.project-row');
+if (filterTabs.length && rows.length) {
   filterTabs.forEach(btn => {
     btn.addEventListener('click', () => {
       filterTabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
       const f = btn.dataset.filter;
-      cards.forEach(card => {
-        const match = f === 'all' || card.dataset.category === f;
-        card.classList.toggle('card--filtered-out', !match);
+      rows.forEach(row => {
+        const match = f === 'all' || row.dataset.category === f;
+        row.style.display = match ? '' : 'none';
       });
     });
   });
