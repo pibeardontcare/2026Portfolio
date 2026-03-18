@@ -49,7 +49,25 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-// Filter tabs are now handled by js/gallery.js (Three.js gallery)
+/* ============================================================
+   FILTER TABS
+   ============================================================ */
+const filterTabs = document.querySelectorAll('.filter-tab');
+const cards = document.querySelectorAll('.card');
+if (filterTabs.length && cards.length) {
+  filterTabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterTabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const f = btn.dataset.filter;
+      cards.forEach(card => {
+        const match = f === 'all' || card.dataset.category === f;
+        card.classList.toggle('card--filtered-out', !match);
+      });
+    });
+  });
+}
 
 /* ============================================================
    ACTIVE NAV LINK (detail pages)

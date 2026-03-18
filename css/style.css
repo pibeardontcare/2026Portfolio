@@ -288,19 +288,6 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: none;
 }
 
-/* Three.js timeline gallery */
-.gallery-scroll-track {
-  position: relative;
-  height: 620vh;   /* scroll room for 8 years of timeline (2019–2026) */
-}
-#gallery-canvas {
-  position: sticky;
-  top: 0;
-  display: block;
-  width: 100%;
-  height: 100vh;
-}
-
 /* ============================================================
    PROJECTS — GRID
    ============================================================ */

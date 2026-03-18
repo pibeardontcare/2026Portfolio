@@ -12,9 +12,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script type="importmap">
-    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js" } }
-  </script>
 </head>
 <body>
 
@@ -77,21 +74,18 @@
           <span class="t-label">Selected work</span>
           <div class="filter-tabs" role="tablist" aria-label="Filter projects by topic">
             <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
-            <button class="filter-tab" data-filter="xr" role="tab" aria-selected="false">XR</button>
             <button class="filter-tab" data-filter="ai" role="tab" aria-selected="false">AI</button>
-            <button class="filter-tab" data-filter="games" role="tab" aria-selected="false">Games</button>
+            <button class="filter-tab" data-filter="xr" role="tab" aria-selected="false">XR</button>
+            <button class="filter-tab" data-filter="immersive" role="tab" aria-selected="false">Immersive</button>
           </div>
         </div>
       </div>
 
-      <div class="gallery-scroll-track">
-        <canvas id="gallery-canvas" aria-label="Interactive project gallery — scroll to travel through time"></canvas>
-      </div>
-
-      <!-- kept for SEO / no-JS fallback, visually hidden -->
-      <div class="projects__grid" aria-hidden="true" style="display:none;">
+      <div class="projects__grid">
         <div class="container" style="padding-left:0; padding-right:0; max-width:100%;">
-        <article class="card card--featured" data-company="ai">
+
+          <!-- ROW 1: MrBeast × Salesforce — featured -->
+          <article class="card card--featured reveal" data-category="ai">
             <a href="projects/mrbeast-puzzle.html" class="card__link" aria-label="View MrBeast × Salesforce Super Bowl project"></a>
             <div class="card__media">
               <img src="https://img.youtube.com/vi/Lp9OEfkWfLI/maxresdefault.jpg" alt="Salesforce × MrBeast Super Bowl Puzzle Game" loading="lazy">
@@ -99,7 +93,7 @@
             <div class="card__body">
               <div>
                 <h2 class="card__title">Salesforce × MrBeast</h2>
-                <p class="card__desc">Super Bowl puzzle game designed for Salesforce and MrBeast — a high-scale interactive experience launched to millions during the Big Game.</p>
+                <p class="card__desc">Super Bowl LIX puzzle game — a high-scale interactive experience built for Salesforce and MrBeast, launched live to millions during the Big Game.</p>
               </div>
               <div class="card__cta">View project <span class="card__cta-arrow">→</span></div>
               <div class="card__tags">
@@ -110,166 +104,8 @@
             </div>
           </article>
 
-          <!-- ROW 2: Keeping the Lights On + VR Synoptophore -->
-          <article class="card card--half reveal reveal-delay-1" data-company="">
-            <a href="projects/keeping-lights-on.html" class="card__link" aria-label="View Keeping the Lights On project"></a>
-            <div class="card__media">
-              <img src="assets/images/thumb-keeping-lights-on.jpg" alt="Keeping the Lights On" loading="lazy">
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Keeping the Lights On</h2>
-              <p class="card__desc">Facebook Engineering campaign honoring infrastructure teams who kept communities connected to critical services during the pandemic.</p>
-              <div class="card__tags">
-                <span class="tag">Campaign</span>
-                <span class="tag">Brand</span>
-              </div>
-              <div class="card__cta">View project <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <article class="card card--half reveal reveal-delay-2" data-company="xr">
-            <a href="projects/vr-synoptophore.html" class="card__link" aria-label="View VR Synoptophore project"></a>
-            <div class="card__media">
-              <img src="assets/images/vr-synoptophore-img.png" alt="VR Synoptophore — Meta Quest Pro diagnostic app" loading="lazy">
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">VR Synoptophore</h2>
-              <p class="card__desc">Replacing bulky analog diagnostic equipment with portable VR — clinical testing confirmed accuracy within 5.4 prism diopters.</p>
-              <div class="card__tags">
-                <span class="tag">VR</span>
-                <span class="tag">Health Tech</span>
-                <span class="tag">Diagnostics</span>
-              </div>
-              <div class="card__cta">View project <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <!-- ROW 3: Creative Automation + VR Careers + AR Pen Pals -->
-          <article class="card card--third reveal" data-company="ai">
-            <a href="projects/creative-automation.html" class="card__link" aria-label="View Creative Automation project"></a>
-            <div class="card__media card__media--no-asset">
-              <div class="card__media-text-bg" aria-hidden="true">
-                <span>AUTO</span><span>MATE</span>
-              </div>
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Creative Automation</h2>
-              <p class="card__desc">Robot-assisted, micro-targeted art direction — AI pipelines and automated motion scaling localized creative across global markets.</p>
-              <div class="card__tags">
-                <span class="tag">AI</span>
-                <span class="tag">Robotics</span>
-                <span class="tag">Automation</span>
-              </div>
-              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <article class="card card--third reveal reveal-delay-1" data-company="xr">
-            <a href="projects/vr-careers.html" class="card__link" aria-label="View VR Careers project"></a>
-            <div class="card__media">
-              <img src="assets/images/Interview%20Prep%20Cover.png" alt="VR Careers — Meta Recruiting" loading="lazy">
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">VR Careers</h2>
-              <p class="card__desc">Hackathon-winning VR experience helping Meta candidates visualize the metaverse — extended into personalized offer letter worlds.</p>
-              <div class="card__tags">
-                <span class="tag">VR</span>
-                <span class="tag">UX</span>
-              </div>
-              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <article class="card card--third reveal reveal-delay-2" data-company="xr">
-            <a href="projects/ar-pen-pals.html" class="card__link" aria-label="View AR Pen Pals project"></a>
-            <div class="card__media">
-              <img src="assets/images/thumb-ar-pen-pals.jpg" alt="P.E.C.K. — AR Pen Pals" loading="lazy">
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">P.E.C.K. — AR Pen Pals</h2>
-              <p class="card__desc">MIT Reality Hack: middle schoolers sharing culturally meaningful objects as interactive 3D models with recorded audio.</p>
-              <div class="card__tags">
-                <span class="tag">AR</span>
-                <span class="tag">Education</span>
-              </div>
-              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <!-- ROW 4: VR Mindfulness + Nanaverse + Finding Primrose -->
-          <article class="card card--third reveal" data-company="xr">
-            <a href="projects/vr-mindfulness.html" class="card__link" aria-label="View VR Mindfulness project"></a>
-            <div class="card__media">
-              <img src="assets/images/thumb-vr-mindfulness.jpg" alt="Zen Doodle Oasis — VR Mindfulness" loading="lazy">
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Zen Doodle Oasis</h2>
-              <p class="card__desc">VR mindfulness experience for children and adults — calming environments built from children's artwork brought to life in immersive 3D.</p>
-              <div class="card__tags">
-                <span class="tag">VR</span>
-                <span class="tag">Mindfulness</span>
-              </div>
-              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
-            </div>
-          </article>
-
-          <article class="card card--third reveal reveal-delay-1" data-company="games">
-            <a href="https://nanaverse.netlify.app/" target="_blank" rel="noopener" class="card__link" aria-label="View Nanaverse project"></a>
-            <div class="card__media card__media--no-asset">
-              <div class="card__media-text-bg" aria-hidden="true">
-                <span>NANA</span><span>VERSE</span>
-              </div>
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Nanaverse</h2>
-              <p class="card__desc">Immersive world-building experiment — a personal universe built in layers, blending memory, space, and interactive narrative.</p>
-              <div class="card__tags">
-                <span class="tag">World Building</span>
-                <span class="tag">Interactive</span>
-              </div>
-              <div class="card__cta">Visit ↗</div>
-            </div>
-          </article>
-
-          <article class="card card--third reveal reveal-delay-2" data-company="games">
-            <a href="https://stummo.itch.io/finding-primrose" target="_blank" rel="noopener" class="card__link" aria-label="Play Finding Primrose"></a>
-            <div class="card__media card__media--no-asset">
-              <div class="card__media-text-bg" aria-hidden="true">
-                <span>FIND</span><span>ING</span>
-              </div>
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Finding Primrose</h2>
-              <p class="card__desc">A short narrative game about discovery and memory — built as a personal experiment in interactive storytelling and game design.</p>
-              <div class="card__tags">
-                <span class="tag">Game</span>
-                <span class="tag">Narrative</span>
-              </div>
-              <div class="card__cta">Play on itch.io ↗</div>
-            </div>
-          </article>
-
-          <!-- ROW 5: Art Plinko + Sentiment Mesh -->
-          <article class="card card--half reveal" data-company="games">
-            <a href="https://artplinko.netlify.app" target="_blank" rel="noopener" class="card__link" aria-label="Play Art Plinko"></a>
-            <div class="card__media card__media--no-asset">
-              <div class="card__media-text-bg" aria-hidden="true">
-                <span>ART</span><span>PLINKO</span>
-              </div>
-            </div>
-            <div class="card__body">
-              <h2 class="card__title">Art Plinko</h2>
-              <p class="card__desc">An interactive web experiment — physics-driven art generation where chance and creativity collide in real time.</p>
-              <div class="card__tags">
-                <span class="tag">Interactive</span>
-                <span class="tag">Physics</span>
-                <span class="tag">Generative</span>
-              </div>
-              <div class="card__cta">Play ↗</div>
-            </div>
-          </article>
-
-          <article class="card card--half reveal reveal-delay-1" data-company="ai">
+          <!-- ROW 2: Sentiment Mesh + VR Synoptophore -->
+          <article class="card card--half reveal" data-category="ai">
             <a href="projects/sentiment-mesh.html" class="card__link" aria-label="View Sentiment Mesh project"></a>
             <div class="card__media card__media--no-asset">
               <div class="card__media-text-bg" aria-hidden="true">
@@ -288,7 +124,166 @@
             </div>
           </article>
 
-        </div>
+          <article class="card card--half reveal reveal-delay-1" data-category="xr">
+            <a href="projects/vr-synoptophore.html" class="card__link" aria-label="View VR Synoptophore project"></a>
+            <div class="card__media">
+              <img src="assets/images/vr-synoptophore-img.png" alt="VR Synoptophore — Meta Quest Pro diagnostic app" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">VR Synoptophore</h2>
+              <p class="card__desc">Replacing bulky analog diagnostic equipment with portable VR — clinical testing confirmed accuracy within 5.4 prism diopters.</p>
+              <div class="card__tags">
+                <span class="tag">VR</span>
+                <span class="tag">Health Tech</span>
+                <span class="tag">Diagnostics</span>
+              </div>
+              <div class="card__cta">View project <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <!-- ROW 3: Creative Automation + AR Pen Pals + VR Careers -->
+          <article class="card card--third reveal" data-category="ai">
+            <a href="projects/creative-automation.html" class="card__link" aria-label="View Creative Automation project"></a>
+            <div class="card__media card__media--no-asset">
+              <div class="card__media-text-bg" aria-hidden="true">
+                <span>AUTO</span><span>MATE</span>
+              </div>
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Creative Automation</h2>
+              <p class="card__desc">End-to-end AI pipelines for production-scale creative — image generation, automated motion systems, and custom Python tooling built to run at global scale.</p>
+              <div class="card__tags">
+                <span class="tag">AI</span>
+                <span class="tag">Automation</span>
+                <span class="tag">Python</span>
+              </div>
+              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <article class="card card--third reveal reveal-delay-1" data-category="xr">
+            <a href="projects/ar-pen-pals.html" class="card__link" aria-label="View AR Pen Pals project"></a>
+            <div class="card__media">
+              <img src="assets/images/thumb-ar-pen-pals.jpg" alt="P.E.C.K. — AR Pen Pals" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">P.E.C.K. — AR Pen Pals</h2>
+              <p class="card__desc">MIT Reality Hack: middle schoolers sharing culturally meaningful objects as interactive 3D models with recorded audio.</p>
+              <div class="card__tags">
+                <span class="tag">AR</span>
+                <span class="tag">Education</span>
+                <span class="tag">MIT Reality Hack</span>
+              </div>
+              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <article class="card card--third reveal reveal-delay-2" data-category="xr">
+            <a href="projects/vr-careers.html" class="card__link" aria-label="View VR Careers project"></a>
+            <div class="card__media">
+              <img src="assets/images/Interview%20Prep%20Cover.png" alt="VR Careers — Meta Recruiting" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">VR Careers</h2>
+              <p class="card__desc">Hackathon-winning VR experience helping Meta candidates visualize the metaverse — extended into personalized offer letter worlds.</p>
+              <div class="card__tags">
+                <span class="tag">VR</span>
+                <span class="tag">UX</span>
+                <span class="tag">Meta</span>
+              </div>
+              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <!-- ROW 4: Keeping the Lights On (solo half) -->
+          <article class="card card--half reveal" data-category="">
+            <a href="projects/keeping-lights-on.html" class="card__link" aria-label="View Keeping the Lights On project"></a>
+            <div class="card__media">
+              <img src="assets/images/thumb-keeping-lights-on.jpg" alt="Keeping the Lights On" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Keeping the Lights On</h2>
+              <p class="card__desc">Facebook Engineering campaign honoring the infrastructure teams who kept communities connected to critical services during the pandemic.</p>
+              <div class="card__tags">
+                <span class="tag">Campaign</span>
+                <span class="tag">Brand Film</span>
+                <span class="tag">Facebook</span>
+              </div>
+              <div class="card__cta">View project <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <!-- ROW 5: Personal projects — Zen Doodle + Nanaverse + Finding Primrose + Art Plinko -->
+          <article class="card card--third reveal" data-category="immersive">
+            <a href="projects/vr-mindfulness.html" class="card__link" aria-label="View Zen Doodle Oasis project"></a>
+            <div class="card__media">
+              <img src="assets/images/thumb-vr-mindfulness.jpg" alt="Zen Doodle Oasis — VR Mindfulness" loading="lazy">
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Zen Doodle Oasis</h2>
+              <p class="card__desc">VR mindfulness experience — calming environments built from children's artwork, brought to life in immersive 3D.</p>
+              <div class="card__tags">
+                <span class="tag">VR</span>
+                <span class="tag">Mindfulness</span>
+              </div>
+              <div class="card__cta">View <span class="card__cta-arrow">→</span></div>
+            </div>
+          </article>
+
+          <article class="card card--third reveal reveal-delay-1" data-category="immersive">
+            <a href="https://nanaverse.netlify.app/" target="_blank" rel="noopener" class="card__link" aria-label="Visit Nanaverse"></a>
+            <div class="card__media card__media--no-asset">
+              <div class="card__media-text-bg" aria-hidden="true">
+                <span>NANA</span><span>VERSE</span>
+              </div>
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Nanaverse</h2>
+              <p class="card__desc">Immersive world-building experiment — a personal universe built in layers, blending memory, space, and interactive narrative.</p>
+              <div class="card__tags">
+                <span class="tag">World Building</span>
+                <span class="tag">Interactive</span>
+              </div>
+              <div class="card__cta">Visit ↗</div>
+            </div>
+          </article>
+
+          <article class="card card--third reveal reveal-delay-2" data-category="immersive">
+            <a href="https://stummo.itch.io/finding-primrose" target="_blank" rel="noopener" class="card__link" aria-label="Play Finding Primrose"></a>
+            <div class="card__media card__media--no-asset">
+              <div class="card__media-text-bg" aria-hidden="true">
+                <span>FIND</span><span>ING</span>
+              </div>
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Finding Primrose</h2>
+              <p class="card__desc">A short narrative game about discovery and memory — a personal experiment in interactive storytelling.</p>
+              <div class="card__tags">
+                <span class="tag">Game</span>
+                <span class="tag">Narrative</span>
+              </div>
+              <div class="card__cta">Play on itch.io ↗</div>
+            </div>
+          </article>
+
+          <article class="card card--third reveal" data-category="immersive">
+            <a href="https://artplinko.netlify.app" target="_blank" rel="noopener" class="card__link" aria-label="Play Art Plinko"></a>
+            <div class="card__media card__media--no-asset">
+              <div class="card__media-text-bg" aria-hidden="true">
+                <span>ART</span><span>PLINKO</span>
+              </div>
+            </div>
+            <div class="card__body">
+              <h2 class="card__title">Art Plinko</h2>
+              <p class="card__desc">Physics-driven art generation — a web experiment where chance and creativity collide in real time.</p>
+              <div class="card__tags">
+                <span class="tag">Interactive</span>
+                <span class="tag">Generative</span>
+              </div>
+              <div class="card__cta">Play ↗</div>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
@@ -349,6 +344,5 @@
   </footer>
 
   <script src="js/main.js"></script>
-  <script type="module" src="js/gallery.js"></script>
 </body>
 </html>
